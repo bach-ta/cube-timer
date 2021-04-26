@@ -1,5 +1,8 @@
 .App {
   text-align: center;
+  font-family: 'Courier New', Courier, monospace;
+  width: 80%;
+  margin-left: 10%;
 }
 
 .App-logo {
