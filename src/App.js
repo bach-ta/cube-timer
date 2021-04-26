@@ -2,7 +2,7 @@ import './App.css';
 import React, { useState, useEffect } from 'react'
 import Display from './components/Display'
 import Results from './components/Results'
-import getScrambles from './scrambler'
+import getScramble from './scrambler'
 
 const App = () => {
   const [timerOn, setTimerOn] = useState(false)
@@ -11,12 +11,13 @@ const App = () => {
   const [totalSolves, setTotalSolves] = useState(0)
 
   const [results, setResults] = useState([])
-  const [scramble, setScramble] = useState(getScrambles())
+  const [scramble, setScramble] = useState(getScramble())
   const [p, setP] = useState(false)
 
   // console.log(scramble)
 
   const onKeyDown = (e) => {
+    e.stopPropagation();
     e.preventDefault()
     if (e.keyCode === 32) {
       clearInterval(intervalID)
@@ -26,6 +27,7 @@ const App = () => {
   }
 
   const onKeyUp = (e) => {
+    e.stopPropagation();
     e.preventDefault()
     if (intervalID === -1) {
       if (e.keyCode === 32) {
@@ -55,7 +57,7 @@ const App = () => {
         return newArray
       })
 
-      setScramble(getScrambles())
+      setScramble(getScramble())
 
       setIntervalID(-1)
       setP(a => !a)
@@ -73,7 +75,7 @@ const App = () => {
   return (
     <div className="App">
       <div>
-        <Display time={displayTime} scramble={scramble} newScrambles={() => setScramble(getScrambles())} />
+        <Display time={displayTime} scramble={scramble} newScramble={() => setScramble(getScramble())} />
         <Results results={results} />
       </div>
     </div>

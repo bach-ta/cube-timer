@@ -1,11 +1,4 @@
-const baseUrl = 'https://scrambler-api.herokuapp.com/3x3x3'
-
-const getRan = (array) => {
-  let k = Math.floor(Math.random() * 6)
-  return array[k]
-}
-
-const getScrambles = () => {
+const getScramble = () => {
   const len = 20
   let ans = ""
   let s = -1;
@@ -59,4 +52,4 @@ const getScrambles = () => {
   return ans
 }
 
-export default getScrambles
+export default getScramble

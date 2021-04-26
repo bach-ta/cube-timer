@@ -18,6 +18,7 @@ const Results = ({ results }) => {
             <TableCell> # </TableCell>
             <TableCell align="center">Time</TableCell>
             <TableCell align="center">Date</TableCell>
+            <TableCell align="center">Scramble</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -28,6 +29,7 @@ const Results = ({ results }) => {
               </TableCell>
               <TableCell align="center">{result.time}</TableCell>
               <TableCell align="center">{result.date}</TableCell>
+              <TableCell align="center">{result.scramble}</TableCell>
             </TableRow>
           ))}
         </TableBody>

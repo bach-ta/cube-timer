@@ -1,7 +1,7 @@
 import React from 'react'
 import './Display.css';
 
-const Display = ({time, scramble, newScrambles}) => {
+const Display = ({time, scramble, newScramble}) => {
   
   const styleDisplay = {
     color: "green",
@@ -13,7 +13,7 @@ const Display = ({time, scramble, newScrambles}) => {
   return (
     <div>
       <p>{scramble}</p>
-      <button onClick={() => newScrambles()}>
+      <button onClick={() => newScramble()}>
         New Scramble
       </button>
       <h1 className="stopwatch">{time ? (time / 100).toFixed(2) : 0}</h1>
