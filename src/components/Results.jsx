@@ -1,11 +1,14 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@material-ui/core'
+import { Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
 import './Results.css';
 
 const Results = ({ results, deleteSolve }) => {
   return (
+    !results[0] 
+      ? <Typography variant="body1">No history</Typography>
+      :
     <TableContainer component={Paper} >
       <Table size="small" aria-label="a dense table">
         <TableHead>
