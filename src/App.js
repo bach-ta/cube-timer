@@ -5,7 +5,7 @@ import Results from './components/Results'
 import Scramble from './components/Scramble'
 import AO5 from './components/AO5'
 import getScramble from './scrambler'
-import { Typography, Button, Paper, Grid } from '@material-ui/core'
+import { Box, Typography, Button, Grid } from '@material-ui/core'
 
 const App = () => {
   const [timerOn, setTimerOn] = useState(false)
@@ -80,7 +80,7 @@ const App = () => {
 
   // console.log(results)
   // console.log(totalSolves)
-  console.log(ao5)
+  // console.log(ao5)
 
   const deleteSolve = (id) => {
     const newResults = results
@@ -113,8 +113,7 @@ const App = () => {
     if (len < 5) {
       setAo5("N/A")
     } else {
-      let min = 999, max = 0, sum = 0
-      let minidx = 0, maxidx = 0
+      let sum = 0, minidx = 0, maxidx = 0
       for (let i = 0; i < 5; i++) {
         let cur = parseFloat(results[i].time)
         sum += cur
@@ -141,22 +140,21 @@ const App = () => {
           <Scramble scramble={scramble} newScramble={() => setScramble(getScramble())} />
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid item xs={3}>
+          <Box mb={2}>
+            <Button variant="contained" color="secondary" onClick={resetSolves}>
+              Reset All
+            </Button>
+          </Box>
+          <Results results={results} deleteSolve={deleteSolve} />
+        </Grid>
+
+        <Grid item xs={6}>
           <Display time={displayTime} />
         </Grid>
 
-        <Grid item xs={12}>
-          <AO5 ao5={ao5}/>
-        </Grid>
-
-        <Grid item xs={12}>
-          <Button variant="contained" color="primary" onClick={resetSolves}>
-            Reset All
-          </Button>
-        </Grid>
-
-        <Grid item xs={12}>
-          <Results results={results} deleteSolve={deleteSolve} />
+        <Grid item xs={3}>
+          <AO5 ao5={ao5} />
         </Grid>
 
       </Grid>
