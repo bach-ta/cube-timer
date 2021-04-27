@@ -2,7 +2,9 @@ import './App.css';
 import React, { useState, useEffect } from 'react'
 import Display from './components/Display'
 import Results from './components/Results'
+import Scramble from './components/Scramble'
 import getScramble from './scrambler'
+import { Button, Paper, Grid } from '@material-ui/core'
 
 const App = () => {
   const [timerOn, setTimerOn] = useState(false)
@@ -22,8 +24,8 @@ const App = () => {
     if (e.keyCode === 32) {
       clearInterval(intervalID)
       setTimerOn(a => !a)
+      document.removeEventListener("keydown", onKeyDown)
     }
-    document.removeEventListener("keydown", onKeyDown)
   }
 
   const onKeyUp = (e) => {
@@ -72,12 +74,50 @@ const App = () => {
     else document.addEventListener("keyup", onKeyUp)
   }, [timerOn, p])
 
+  // console.log(results)
+
+  const deleteSolve = (id) => {
+    const newResults = results
+    console.log("deleting" + id)
+    console.log("start at index" + totalSolves - id - 1)
+    for (let i = totalSolves - id - 1; i >= 1; i--) {
+      newResults[i] = newResults[i - 1]
+      newResults[i].id--
+    }
+    newResults.shift()
+    setTotalSolves(total => total - 1)
+    setResults(newResults)
+  }
+
+  const resetSolves = () => {
+    if (window.confirm("Do you want to remove all solves?")) {
+      setTotalSolves(0)
+      setResults([])
+    }
+  }
+
   return (
     <div className="App">
-      <div>
-        <Display time={displayTime} scramble={scramble} newScramble={() => setScramble(getScramble())} />
-        <Results results={results} />
-      </div>
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <Scramble scramble={scramble} newScramble={() => setScramble(getScramble())} />
+        </Grid>
+
+        <Grid item xs={12}>
+          <Display time={displayTime} />
+        </Grid>
+
+        <Grid item xs={12}>
+          <Button variant="contained" color="primary" onClick={resetSolves}>
+            Reset All
+          </Button>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Results results={results} deleteSolve={deleteSolve} />
+        </Grid>
+
+      </Grid>
     </div>
   );
 }

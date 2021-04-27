@@ -1,22 +1,13 @@
 import React from 'react'
 import './Display.css';
+import Typography from '@material-ui/core/Typography';
 
-const Display = ({time, scramble, newScramble}) => {
-  
-  const styleDisplay = {
-    color: "green",
-    backgroundColor: "grey",
-    padding: "10px",
-    fontFamily: "Arial"
-  };
-
+const Display = ({ time }) => {
   return (
-    <div>
-      <p>{scramble}</p>
-      <button onClick={() => newScramble()}>
-        New Scramble
-      </button>
-      <h1 className="stopwatch">{time ? (time / 100).toFixed(2) : 0}</h1>
+    <div className="displayContainer">
+      <Typography variant="h1" className="stopwatch">
+      {time ? (time / 100).toFixed(2) : 0}
+    </Typography>
     </div>
   )
 }

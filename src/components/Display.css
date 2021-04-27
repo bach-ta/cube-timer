@@ -1,8 +1,18 @@
-.stopwatch {
+.displayContainer {
+  height: 200px;
+  line-height: 200px;
+
+  padding: 70px 0;
   text-align: center;
+
   font-size: 100px;
   color: white;
   background-color: rgb(235, 207, 207);
-  padding: 10px;
+  padding: 10px !important;
   font-family: Arial
+}
+
+.stopwatch {
+  justify-content: center;
+  padding: 50px 0;
 }

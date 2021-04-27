@@ -30,7 +30,7 @@ const getScramble = () => {
         move = z[k - 6]
         s = 2
       }
-    } else if (s == 1) {
+    } else if (s === 1) {
       if (k < 6) {
         move = x[k]
         s = 0
