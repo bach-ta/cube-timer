@@ -4,8 +4,12 @@ import Display from './components/Display'
 import Results from './components/Results'
 import Scramble from './components/Scramble'
 import AO5 from './components/AO5'
+import LineChart from './components/LineChart'
 import getScramble from './scrambler'
 import { Box, Typography, Button, Grid } from '@material-ui/core'
+
+const itv = 1000
+const decimalPlace = 2
 
 const App = () => {
   const [timerOn, setTimerOn] = useState(false)
@@ -13,11 +17,13 @@ const App = () => {
   const [intervalID, setIntervalID] = useState(-1)
   const [totalSolves, setTotalSolves] = useState(0)
 
+  const [startTime, setStartTime] = useState(0)
+
   const [results, setResults] = useState([])
   const [scramble, setScramble] = useState(getScramble())
   const [p, setP] = useState(false)
 
-  const [ao5, setAo5] = useState("N/A")
+  const [ao5, setAo5] = useState(["N/A", "N/A", "N/A", "N/A"])
 
   // console.log(scramble)
 
@@ -27,32 +33,15 @@ const App = () => {
       e.stopPropagation()
       clearInterval(intervalID)
       setTimerOn(a => !a)
-      document.removeEventListener("keydown", onKeyDown)
-    }
-  }
-
-  const onKeyUp = (e) => {
-    if (intervalID === -1) {
-      if (e.keyCode === 32) {
-        e.preventDefault()
-        e.stopPropagation()
-        // console.log("infunc:" + timerOn)
-        setDisplayTime(0)
-        const interval = setInterval(() => {
-          setDisplayTime(displayTime => displayTime + 1)
-        }, 10)
-        setIntervalID(interval)
-        setTimerOn(a => !a)
-        document.removeEventListener("keyup", onKeyUp)
-      } else if (e.key === 'Escape') {
-        e.preventDefault()
-        setDisplayTime(0)
-      }
-    } else {
       const date = new Date()
+      const newDisplayTime = ((date.getTime() - startTime) / 1000).toFixed(decimalPlace)
+      setDisplayTime(newDisplayTime)
+      setStartTime(0)
+
+      ////////////// save result
       const newResult = {
         id: totalSolves,
-        time: (displayTime / 100).toFixed(2),
+        time: newDisplayTime,
         date: date.toLocaleString(),
         scramble: scramble
       }
@@ -64,7 +53,31 @@ const App = () => {
       setTotalSolves(total => total + 1)
 
       setScramble(getScramble())
+      document.removeEventListener("keydown", onKeyDown)
+    }
+  }
 
+  const onKeyUp = (e) => {
+    if (intervalID === -1) {
+      if (e.keyCode === 32) {
+        // start timing
+        e.preventDefault()
+        e.stopPropagation()
+        const startTimeDate = new Date()
+        setStartTime(startTimeDate.getTime())
+        setDisplayTime(0)
+        const interval = setInterval(() => {
+          setDisplayTime(displayTime => displayTime + 1)
+        }, itv)
+        setIntervalID(interval)
+        setTimerOn(a => !a)
+        document.removeEventListener("keyup", onKeyUp)
+      } else if (e.key === 'Escape') {
+        e.preventDefault()
+        setDisplayTime(0)
+      }
+    } else {
+      // reset keyup
       setIntervalID(-1)
       setP(a => !a)
       document.removeEventListener("keydown", onKeyDown)
@@ -84,8 +97,6 @@ const App = () => {
 
   const deleteSolve = (id) => {
     const newResults = results
-    // console.log("deleting" + id)
-    // console.log("start at index" + totalSolves - id - 1)
     for (let i = totalSolves - id - 1; i >= 1; i--) {
       newResults[i] = newResults[i - 1]
       newResults[i].id--
@@ -109,10 +120,8 @@ const App = () => {
     // console.log("total: " + totalSolves)
     // console.log("res len: " + results.length)
     // console.log(results)
-    const len = results.length
-    if (len < 5) {
-      setAo5("N/A")
-    } else {
+    // const len = results.length
+    if (totalSolves >= 5) {
       let sum = 0, minidx = 0, maxidx = 0
       for (let i = 0; i < 5; i++) {
         let cur = parseFloat(results[i].time)
@@ -126,27 +135,36 @@ const App = () => {
         if (i === minidx || i === maxidx) details += '(' + results[i].time + ')'
         else details += results[i].time
       }
-      setAo5({
-        time: ((sum - parseFloat(results[minidx].time) - parseFloat(results[maxidx].time)) / 3).toFixed(2),
-        details: details
+      setAo5(ao5 => {
+        const newAO5 = ao5
+        newAO5.unshift({
+          time: ((sum - parseFloat(results[minidx].time) - parseFloat(results[maxidx].time)) / 3).toFixed(2),
+          details: details
+        })
+        return newAO5
       })
     }
   }, [totalSolves])
 
+  // console.log(totalSolves)
+  // console.log(ao5)
+
   return (
     <div className="App">
-      <Grid container spacing={3}>
+      <Grid container spacing={3} justify="center">
         <Grid item xs={12}>
           <Scramble scramble={scramble} newScramble={() => setScramble(getScramble())} />
         </Grid>
 
-        <Grid item xs={3}>
+        <Grid item xs={3} height="100%">
           <Box mb={2}>
             <Button variant="contained" color="secondary" onClick={resetSolves}>
               Reset All
             </Button>
           </Box>
-          <Results results={results} deleteSolve={deleteSolve} />
+          <Box>
+            <Results results={results} deleteSolve={deleteSolve} />
+          </Box>
         </Grid>
 
         <Grid item xs={6}>
@@ -154,7 +172,11 @@ const App = () => {
         </Grid>
 
         <Grid item xs={3}>
-          <AO5 ao5={ao5} />
+          <AO5 ao5={ao5[0]} />
+        </Grid>
+
+        <Grid item xs={6}>
+          <LineChart results={results} ao5={ao5} />
         </Grid>
 
       </Grid>

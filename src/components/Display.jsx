@@ -6,7 +6,7 @@ const Display = ({ time }) => {
   return (
     <div className="displayContainer">
       <Typography variant="h1" className="stopwatch">
-        <strong>{time ? (time / 100).toFixed(2) : 0}</strong>
+        <strong>{time}</strong>
       </Typography>
     </div>
   )

@@ -11,7 +11,7 @@ const AO5 = ({ao5}) => {
         <Typography variant="h6" color="primary">
           {ao5 === "N/A" ? ao5 : ao5.time}
         </Typography>
-        <Typography variant="body1">
+        <Typography variant="body2">
           {ao5 === "N/A" ? null : ao5.details}
         </Typography>
       </CardContent>

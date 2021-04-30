@@ -18,7 +18,7 @@ const Results = ({ results, deleteSolve }) => {
         </TableHead>
         <TableBody>
           {results.map((result) => (
-            <TableRow key={result.id}>
+            <TableRow key={result.id} color="primary">
               <TableCell align="center" component="th" scope="row">
                 <ResultDetails result={result} deleteSolve={deleteSolve} />
               </TableCell>
