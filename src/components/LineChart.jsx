@@ -9,7 +9,7 @@ const LineChart = ({ results, ao5 }) => {
           labels: results.map(({ date }) => new Date(date).toLocaleDateString()),
           datasets: [{
             data: results.map(result => result.time),
-            label: "Individual Solving Time",
+            label: "Time",
             borderColor: "#ff7961",
             fill: false,
           }, {

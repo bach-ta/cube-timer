@@ -8,7 +8,7 @@ import LineChart from './components/LineChart'
 import getScramble from './scrambler'
 import { Box, Typography, Button, Grid } from '@material-ui/core'
 
-const itv = 1000
+const itv = 100
 const decimalPlace = 2
 
 const App = () => {
@@ -24,37 +24,39 @@ const App = () => {
   const [p, setP] = useState(false)
 
   const [ao5, setAo5] = useState(["N/A", "N/A", "N/A", "N/A"])
+  const [personalBest, setPersonalBest] = useState("N/A")
 
   // console.log(scramble)
 
-  const onKeyDown = (e) => {
-    if (e.keyCode === 32) {
-      e.preventDefault()
-      e.stopPropagation()
-      clearInterval(intervalID)
-      setTimerOn(a => !a)
-      const date = new Date()
-      const newDisplayTime = ((date.getTime() - startTime) / 1000).toFixed(decimalPlace)
-      setDisplayTime(newDisplayTime)
-      setStartTime(0)
+  const onKeyDown = (e) => { // press any key to stop the timer
+    e.preventDefault()
+    e.stopPropagation()
+    clearInterval(intervalID)
+    setTimerOn(a => !a)
+    const date = new Date()
+    const newDisplayTime = ((date.getTime() - startTime) / 1000).toFixed(decimalPlace)
+    setDisplayTime(newDisplayTime)
+    setStartTime(0)
 
-      ////////////// save result
-      const newResult = {
-        id: totalSolves,
-        time: newDisplayTime,
-        date: date.toLocaleString(),
-        scramble: scramble
-      }
-      setResults(array => {
-        const newArray = array
-        newArray.unshift(newResult)
-        return newArray
-      })
-      setTotalSolves(total => total + 1)
-
-      setScramble(getScramble())
-      document.removeEventListener("keydown", onKeyDown)
+    ////////////// save result
+    const newResult = {
+      id: totalSolves,
+      time: newDisplayTime,
+      date: date.toLocaleString(),
+      scramble: scramble
     }
+    setResults(array => {
+      const newArray = array
+      newArray.unshift(newResult)
+      return newArray
+    })
+    setTotalSolves(total => total + 1)
+    if (personalBest === "N/A" || newDisplayTime <= personalBest) {
+      setPersonalBest(newResult)
+    }
+
+    setScramble(getScramble())
+    document.removeEventListener("keydown", onKeyDown)
   }
 
   const onKeyUp = (e) => {
@@ -67,7 +69,7 @@ const App = () => {
         setStartTime(startTimeDate.getTime())
         setDisplayTime(0)
         const interval = setInterval(() => {
-          setDisplayTime(displayTime => displayTime + 1)
+          setDisplayTime(displayTime => ((displayTime * 10 + 1) / 10).toFixed(1))
         }, itv)
         setIntervalID(interval)
         setTimerOn(a => !a)
@@ -113,6 +115,8 @@ const App = () => {
       setTotalSolves(0)
       setResults([])
       setDisplayTime(0)
+      setAo5(["N/A", "N/A", "N/A", "N/A"])
+      setPersonalBest("N/A")
     }
   }
 
@@ -149,7 +153,7 @@ const App = () => {
   // console.log(totalSolves)
   // console.log(ao5)
 
-  return (
+  return intervalID === -1 ? (
     <div className="App">
       <Grid container spacing={3} justify="center">
         <Grid item xs={12}>
@@ -168,20 +172,21 @@ const App = () => {
         </Grid>
 
         <Grid item xs={6}>
-          <Display time={displayTime} />
+          <Box mb={2}>
+            <Display time={displayTime} active="false" />
+          </Box>
+          <LineChart results={results} ao5={ao5} />
         </Grid>
 
         <Grid item xs={3}>
-          <AO5 ao5={ao5[0]} />
-        </Grid>
-
-        <Grid item xs={6}>
-          <LineChart results={results} ao5={ao5} />
+          <AO5 ao5={ao5[0]} pb={personalBest} />
         </Grid>
 
       </Grid>
     </div>
-  );
+  ) : (
+    <Display time={displayTime} active="true" />
+  )
 }
 
 export default App;

@@ -1,7 +1,8 @@
 import React from 'react'
-import { Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@material-ui/core'
+import { Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, TableFooter, Paper } from '@material-ui/core'
+// import { DataGrid } from '@material-ui/data-grid';
 import ResultDetails from  './ResultDetails'
-import './Results.css';
+// import './Results.css';
 
 const Results = ({ results, deleteSolve }) => {
   return (
@@ -16,6 +17,7 @@ const Results = ({ results, deleteSolve }) => {
             <TableCell align="center">Time</TableCell>
           </TableRow>
         </TableHead>
+
         <TableBody>
           {results.map((result) => (
             <TableRow key={result.id} color="primary">
@@ -26,18 +28,29 @@ const Results = ({ results, deleteSolve }) => {
             </TableRow>
           ))}
         </TableBody>
+
+        {/* <TableFooter>
+          <TableRow>
+            <TablePagination rowsPerPageOptions={[10, 50]} />
+          </TableRow>
+        </TableFooter> */}
       </Table>
     </TableContainer>
   );
-  return (
-    <ol>
-      {results.map(result =>
-        <li key={result.id}>
-          {result.time} ---- {result.date} ---- {result.scramble}
-        </li>
-      )}
-    </ol>
-  )
+  // return (
+  //   <div style={{ height: 400, width: '100%' }}>
+  //     <DataGrid rows={rows} columns={columns} pageSize={5} checkboxSelection />
+  //   </div>
+  // )
+  // return (
+  //   <ol>
+  //     {results.map(result =>
+  //       <li key={result.id}>
+  //         {result.time} ---- {result.date} ---- {result.scramble}
+  //       </li>
+  //     )}
+  //   </ol>
+  // )
 }
 
 export default Results

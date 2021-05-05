@@ -1,7 +1,7 @@
 import { Card, CardContent, CardActions, Typography, Button } from '@material-ui/core'
 import React from 'react'
 
-const AO5 = ({ao5}) => {
+const AO5 = ({ao5, pb}) => {
   return (
     <Card>
       <CardContent>
@@ -13,6 +13,13 @@ const AO5 = ({ao5}) => {
         </Typography>
         <Typography variant="body2">
           {ao5 === "N/A" ? null : ao5.details}
+        </Typography>
+
+        <Typography variant="h5">
+          Best:
+        </Typography>
+        <Typography variant="h6" color="primary">
+          {pb === "N/A" ? pb : pb.time}
         </Typography>
       </CardContent>
       {/* <CardActions>
