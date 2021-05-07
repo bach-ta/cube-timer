@@ -6,7 +6,7 @@ import Scramble from './components/Scramble'
 import AO5 from './components/AO5'
 import LineChart from './components/LineChart'
 import getScramble from './scrambler'
-import { Box, Typography, Button, Grid } from '@material-ui/core'
+import { Box, Button, Grid } from '@material-ui/core'
 
 const itv = 100
 const decimalPlace = 2
@@ -67,10 +67,13 @@ const App = () => {
 
     setResults(newResults)
     setTotalSolves(total => total + 1)
-    if (personalBest === "N/A" || newDisplayTime <= personalBest.time) {
+
+    // update PB
+    if (personalBest === "N/A" || parseFloat(newDisplayTime) <= parseFloat(personalBest.time)) {
       setPersonalBest(newResult)
     }
 
+    // update AO5
     if (totalSolves + 1 >= 5) {
       let sum = 0, minidx = 0, maxidx = 0
       for (let i = 0; i < 5; i++) {
@@ -153,7 +156,7 @@ const App = () => {
     // update pb
     let newPB = newResults[0]
     for (let i = 1; i < newTotal; i++) {
-      if (newResults[i].time < newPB.time) newPB = newResults[i]
+      if (parseFloat(newResults[i].time) < parseFloat(newPB.time)) newPB = newResults[i]
     }
     setPersonalBest(newPB ? newPB : "N/A")
 
@@ -208,7 +211,7 @@ const App = () => {
               Reset All
             </Button>
           </Box>
-          <Box  className="results-table">
+          <Box className="results-table">
             <Results results={results} deleteSolve={deleteSolve} />
           </Box>
         </Grid>
