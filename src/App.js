@@ -11,20 +11,37 @@ import { Box, Typography, Button, Grid } from '@material-ui/core'
 const itv = 100
 const decimalPlace = 2
 
+const useStateLC = (key, initial) => {
+  const [value, setValue] = useState(() => {
+    if (typeof window !== "undefined") {
+      const saved = window.localStorage.getItem(key)
+      if (saved !== null) {
+        return JSON.parse(saved)
+      }
+    }
+    return initial
+  })
+ 
+  useEffect(() => {
+    window.localStorage.setItem(key, JSON.stringify(value));
+  }, [value])
+ 
+  return [value, setValue];
+};
+
 const App = () => {
   const [timerOn, setTimerOn] = useState(false)
   const [displayTime, setDisplayTime] = useState(0)
   const [intervalID, setIntervalID] = useState(-1)
-  const [totalSolves, setTotalSolves] = useState(0)
-
   const [startTime, setStartTime] = useState(0)
-
-  const [results, setResults] = useState([])
-  const [scramble, setScramble] = useState(getScramble())
   const [p, setP] = useState(false)
+  const [scramble, setScramble] = useState(getScramble())
 
-  const [ao5, setAo5] = useState(["N/A", "N/A", "N/A", "N/A"])
-  const [personalBest, setPersonalBest] = useState("N/A")
+  // local data
+  const [totalSolves, setTotalSolves] = useStateLC("totalSolves", 0)
+  const [results, setResults] = useStateLC("results", [])
+  const [ao5, setAo5] = useStateLC("ao5", ["N/A", "N/A", "N/A", "N/A"])
+  const [personalBest, setPersonalBest] = useStateLC("pb", "N/A")
 
   // console.log(scramble)
 
@@ -45,11 +62,10 @@ const App = () => {
       date: date.toLocaleString(),
       scramble: scramble
     }
-    setResults(array => {
-      const newArray = array
-      newArray.unshift(newResult)
-      return newArray
-    })
+    const newResults = [...results]
+    newResults.unshift(newResult)
+
+    setResults(newResults)
     setTotalSolves(total => total + 1)
     if (personalBest === "N/A" || newDisplayTime <= personalBest.time) {
       setPersonalBest(newResult)
@@ -58,21 +74,21 @@ const App = () => {
     if (totalSolves + 1 >= 5) {
       let sum = 0, minidx = 0, maxidx = 0
       for (let i = 0; i < 5; i++) {
-        let cur = parseFloat(results[i].time)
+        let cur = parseFloat(newResults[i].time)
         sum += cur
-        if (cur < parseFloat(results[minidx].time)) minidx = i;
-        if (cur >= parseFloat(results[maxidx].time)) maxidx = i;
+        if (cur < parseFloat(newResults[minidx].time)) minidx = i;
+        if (cur >= parseFloat(newResults[maxidx].time)) maxidx = i;
       }
       let details = ""
       for (let i = 4; i >= 0; i--) {
         details += " "
-        if (i === minidx || i === maxidx) details += '(' + results[i].time + ')'
-        else details += results[i].time
+        if (i === minidx || i === maxidx) details += '(' + newResults[i].time + ')'
+        else details += newResults[i].time
       }
       setAo5(ao5 => {
-        const newAO5 = ao5
+        const newAO5 = [...ao5]
         newAO5.unshift({
-          time: ((sum - parseFloat(results[minidx].time) - parseFloat(results[maxidx].time)) / 3).toFixed(2),
+          time: ((sum - parseFloat(newResults[minidx].time) - parseFloat(newResults[maxidx].time)) / 3).toFixed(2),
           details: details
         })
         return newAO5
@@ -122,7 +138,7 @@ const App = () => {
   // console.log(ao5)
 
   const deleteSolve = (id) => {
-    const newResults = results
+    const newResults = [...results]
     for (let i = totalSolves - id - 1; i >= 1; i--) {
       newResults[i] = newResults[i - 1]
       newResults[i].id--
@@ -168,7 +184,7 @@ const App = () => {
   }
 
   const resetSolves = () => {
-    if (totalSolves === 0) {
+    if (!results[0]) {
       alert("No solves available")
     } else if (window.confirm("Do you want to remove all solves?")) {
       setTotalSolves(0)
