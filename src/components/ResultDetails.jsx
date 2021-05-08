@@ -4,6 +4,10 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import copy from 'copy-to-clipboard'
 
+const styles = {
+  margin: "auto"
+};
+
 const ResultDetails = ({ result, deleteSolve, inTable }) => {
   const { id, time, date, scramble } = result
   const [open, setOpen] = useState(false)
@@ -20,7 +24,7 @@ const ResultDetails = ({ result, deleteSolve, inTable }) => {
     <div>
       <Button onClick={handleClickOpen}>
         {inTable ? id + 1
-        : <Typography variant="h6" color="primary">
+          : <Typography variant="h6" color="primary">
             {result.time}
           </Typography>}
       </Button>
@@ -35,11 +39,12 @@ const ResultDetails = ({ result, deleteSolve, inTable }) => {
           <DialogContentText id="alert-dialog-description">
             <Grid container spacing={3}>
 
-              <Grid item xs={2} align="center" >Solve #{result.id + 1}</Grid>
-              <Grid item xs={3} align="center">{time}</Grid>
-              <Grid item xs={5} align="center">{date}</Grid>
-              {inTable ? <Grid item xs={2} align="right">
-                <Button
+              <Grid style={styles} item xs={2} align="center">Solve #{result.id + 1}</Grid>
+              <Grid style={styles} item xs={3} align="center">{time}</Grid>
+              <Grid style={styles} item xs={5} align="center">{date}</Grid>
+
+              <Grid item xs={2} align="right">
+                {inTable ? <Button
                   size="small"
                   color="secondary"
                   onClick={() => {
@@ -48,10 +53,13 @@ const ResultDetails = ({ result, deleteSolve, inTable }) => {
                   }}
                 >
                   <DeleteIcon></DeleteIcon>
-                </Button>
-              </Grid> : null}
-              <Grid item xs={10}>
-                Scramble: {scramble}
+                </Button> : null}
+              </Grid>
+              <Grid style={styles} item xs={2}>
+                Scramble:
+              </Grid>
+              <Grid style={styles} item xs={8}>
+                {scramble}
               </Grid>
               <Grid item xs={2} align="right">
                 <Button onClick={() => copy(scramble)}>

@@ -205,7 +205,7 @@ const App = () => {
           <Scramble scramble={scramble} newScramble={() => setScramble(getScramble())} />
         </Grid>
 
-        <Grid item xs={3}>
+        <Grid item xs>
           <Box mb={2}>
             <Button variant="contained" color="secondary" onClick={resetSolves}>
               Reset All
@@ -223,7 +223,7 @@ const App = () => {
           <LineChart results={results} ao5={ao5} />
         </Grid>
 
-        <Grid item xs={3}>
+        <Grid item xs>
           <AO5 ao5={ao5[0]} pb={personalBest} />
         </Grid>
 
