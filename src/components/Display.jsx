@@ -5,9 +5,12 @@ import Typography from '@material-ui/core/Typography';
 const Display = ({ time, active }) => {
   return (
     <div className={active ? "activeDisplay" : "inactiveDisplay"}>
-      <Typography variant="h1" className="stopwatch">
-        <strong>{time}</strong>
-      </Typography>
+      <div className="stopwatch">
+        <Typography variant="h1">
+          <strong>{time}</strong>
+        </Typography>
+        {active ? null : <Typography variant="body1" className="blink">Press Space to start</Typography>}
+      </div>
     </div>
   )
 }

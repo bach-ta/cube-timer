@@ -1,5 +1,6 @@
 import { Card, CardContent, CardActions, Typography, Button } from '@material-ui/core'
 import React from 'react'
+import ResultDetails from './ResultDetails'
 
 const AO5 = ({ao5, pb}) => {
   return (
@@ -19,7 +20,7 @@ const AO5 = ({ao5, pb}) => {
           Best:
         </Typography>
         <Typography variant="h6" color="primary">
-          {pb === "N/A" ? pb : pb.time}
+          {pb === "N/A" ? pb : <ResultDetails result={pb} inTable={0}/>}
         </Typography>
       </CardContent>
       {/* <CardActions>

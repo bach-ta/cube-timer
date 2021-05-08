@@ -13,23 +13,45 @@
   display: inline-block;
   vertical-align: middle;
   line-height: normal;
-  font-size: 100px;
   color: white !important;
 }
 
+.activeDisplay .stopwatch h1 {
+  font-size: 100px;
+}
+
+.blink {
+  color: white;
+  animation: blinker 1.5s linear infinite;
+}
+
+@keyframes blinker {
+  70% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 .activeDisplay {
-  height: 97.5vh;
-  line-height: 97.5vh;
+  height: 97vh;
+  line-height: 97vh;
   text-align: center;
   background-color: rgb(235, 207, 207);
   border-radius: 5px;
-  /* font-family: Arial */
 }
 
 .activeDisplay .stopwatch {
   display: inline-block;
   vertical-align: middle;
   line-height: normal;
-  font-size: 200px !important;
   color: white !important;
+}
+
+.activeDisplay .stopwatch h1 {
+  font-size: 200px;
 }

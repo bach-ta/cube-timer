@@ -47,7 +47,8 @@ const getScramble = () => {
         s = 1
       }
     }
-    ans += " " + " " + move
+    ans += move
+    if (i < len - 1) ans += " "
   }
   return ans
 }
