@@ -43,8 +43,6 @@ const App = () => {
   const [ao5, setAo5] = useStateLC("ao5", ["N/A", "N/A", "N/A", "N/A"])
   const [personalBest, setPersonalBest] = useStateLC("pb", "N/A")
 
-  // console.log(scramble)
-
   const onKeyDown = (e) => { // press any key to stop the timer
     e.preventDefault()
     e.stopPropagation()
@@ -131,14 +129,9 @@ const App = () => {
   }
 
   useEffect(() => {
-    // console.log("useEffect")
     if (timerOn) document.addEventListener("keydown", onKeyDown)
     else document.addEventListener("keyup", onKeyUp)
   }, [timerOn, p])
-
-  // console.log(results)
-  // console.log(totalSolves)
-  // console.log(ao5)
 
   const deleteSolve = (id) => {
     const newResults = [...results]

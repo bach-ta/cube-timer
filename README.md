@@ -1,3 +1,22 @@
+# Cube Timer - A speedcubing timer app built with React.js
+
+[App Link](https://glas-cube-timer.netlify.app/)
+
+The timer will start once you release the spacebar. When you have finished the solve, press any key to stop the timer.
+
+![](src/images/1.png)
+
+Click on the solve # on the left to see details, copy scramble and/or delete the solve.
+
+![](src/images/2.png)
+
+Keep track of your progress with graphs.
+
+![](src/images/3.png)
+
+Data will be stored in your browser's local storage.
+
+---
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
